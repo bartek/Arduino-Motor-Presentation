@@ -1,0 +1,8 @@
+{ 
+    "name": "Arduino Playground", 
+    "sections": [ 
+        {"section":"intro"}, 
+        {"section":"steps"},
+        {"section":"final"}
+    ]
+}
