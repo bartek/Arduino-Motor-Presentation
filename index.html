@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Arduino Playground</title>
+
+  <link rel="stylesheet" href="./css/reset.css" type="text/css"/>
+  <link rel="stylesheet" href="./css/showoff.css" type="text/css"/>
+
+  <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.cycle.all.js"></script>
+	<script type="text/javascript" src="./js/jquery-print.js"></script>
+  <script type="text/javascript" src="./js/jquery.batchImageLoad.js"></script>
+
+  <script type="text/javascript" src="./js/jquery.doubletap-0.1.js"></script>
+
+  <script type="text/javascript" src="./js/fg.menu.js"></script>
+  <script type="text/javascript" src="./js/showoff.js"></script>
+  <script type="text/javascript" src="./js/jTypeWriter.js"> </script>
+  <script type="text/javascript" src="./js/sh_main.min.js"></script>
+  <script type="text/javascript" src="./js/core.js"></script>
+  <script type="text/javascript" src="./js/showoffcore.js"></script>
+
+  <link type="text/css" href="./css/fg.menu.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/theme/ui.all.css" media="screen" rel="stylesheet" />
+  <link type="text/css" href="./css/sh_style.css" rel="stylesheet" >
+
+  
+
+  
+
+  <script type="text/javascript">
+  $(function(){
+    setupPreso(false, './');
+  });
+  </script>
+</head>
+
+<body>
+
+
+<a tabindex="0" href="#search-engines" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="navmenu"><span class="ui-icon ui-icon-triangle-1-s"></span>slides</a>
+<div id="navigation" class="hidden"></div>
+
+<div id="help">
+  <table>
+    <tr><td class="key">space, &rarr;</td><td>next slide</td></tr>
+    <tr><td class="key">&larr;</td><td>previous slide</td></tr>
+    <tr><td class="key">d</td><td>debug mode</td></tr>
+    <tr><td class="key">## &lt;ret&gt;</td><td>go to slide #</td></tr>
+    <tr><td class="key">c</td><td>table of contents (vi)</td></tr>
+    <tr><td class="key">f</td><td>toggle footer</td></tr>
+    <tr><td class="key">r</td><td>reload slides</td></tr>
+    <tr><td class="key">z</td><td>toggle help (this)</td></tr>
+  </table>
+</div>
+
+<div id="preso">loading presentation...</div>
+<div id="footer">
+  <span id="slideInfo"></span>
+  <span id="debugInfo"></span>
+</div>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div class="slide" data-transition="none"><div class="content" ref="intro/01_slide/1">
+<h1>Building a motorized robot with Arduino</h1></div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="intro/01_slide/2">
+<h1>What is Arduino?</h1>
+
+<ul>
+<li>http://arduino.cc/</li>
+<li>Open-source, simple to use electronics prototyping platform.</li>
+<li>With $30 and one night of patience, you can get into hobbyist electronics.</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content full-page" ref="intro/01_slide/3">
+<p><img src="./file/intro/simple-led.jpg" width="988" height="661" alt="Simple LED"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="intro/01_slide/4">
+<iframe title="YouTube video player" width="480" height="390" src="http://www.youtube.com/embed/hDCBJ_5mRJc" frameborder="0"/>
+</div>
+</div><div class="slide" data-transition="none"><div class="content full-page" ref="intro/01_slide/5">
+<p><img src="./file/intro/troy.png" width="488" height="493" alt="Troy"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="steps/01_slide/1">
+<h1>First steps, powering a motor!</h1>
+
+<ul>
+<li>One night I learned: You can't just plug a motor into the power of an Arduino.</li>
+<li>Control flow of current to larger drives with MOSFET transistors!</li>
+</ul>
+
+
+<p>MOSFET means "metal-oxide-semiconductor field-effect transistor". It's a special type of transistor
+that operates based on field-effect principle. This means that electricity will flow through a
+piece of semiconductor material (between the Drain and Source pins) when a voltage is applied to
+the Gate pin. As the Gate is insulated from the rest through a layer of metal oxide, there is no
+current flowing from Arduino into the MOSFET, making it very simple to interface. They are ideal
+for switching on and off large loads at high frequencies. (Definition from Getting Started with Arduino by Make: Projects)</p></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="steps/01_slide/2">
+<h1>Controlling speed</h1>
+
+<p><img src="./file/steps/potentiometer.jpg" width="225" height="264" alt="Potentiometer"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="steps/01_slide/3">
+<h1>Controlling speed</h1>
+
+<ul>
+<li><p>Potentiometers provide a variable resistance which can than be read.</p></li>
+<li><p>Use analogRead() to get the value, map() it relative to PWM values, then analogWrite() it to a PWM pin.</p></li>
+<li><p>CODE PLEASE?</p></li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content code" ref="steps/01_slide/4">
+<h1>Potentiometer + Transistor</h1>
+
+<p>int potpin = 0;
+int mosfetPin = 9;
+int val;</p>
+
+<p>void setup() {
+  Serial.begin(9600); // setup serial
+}</p>
+
+<p>void loop() {
+  val = analogRead(potpin);
+  val = map(val, 0, 1023, 0, 255);
+  Serial.println(val);
+  analogWrite(mosfetPin, val);
+  delay(15);
+}</p></div>
+</div><div class="slide" data-transition="none"><div class="content full-page" ref="steps/01_slide/5">
+<p><img src="./file/steps/mosfet-pwm.jpg" width="640" height="480" alt="Mosfet and PWM"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="steps/02_slide/1">
+<h1>Introducing H-Bridge ICs</h1>
+
+<ul>
+<li>Generally used to run motors in electronic circuits</li>
+<li>Ability for a voltage to be applied across a load in either direction</li>
+<li>Very simple to use!</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="steps/02_slide/2">
+<h1>L293D Diagram</h1>
+
+<p><img src="./file/steps/l293d.gif" width="411" height="399" alt="L293D"/></p>
+
+<table border="1" cellspacing="0" cellpadding="4" width="100%" bordercolor="#000000"><tbody><tr valign="top"><td width="25%" bgcolor="#000000"><span style="color: #000000;"><strong>Pin 1</strong></span></td><td width="25%" bgcolor="#000000"><span style="color: #000000;"><strong>Pin 2</strong></span></td><td width="25%" bgcolor="#000000"><span style="color: #000000;"><strong>Pin 7</strong></span></td><td width="25%" bgcolor="#000000"><span style="color: #000000;"><strong>Function</strong></span></td></tr><tr valign="top"><td width="25%" bgcolor="#e6e6ff">High</td><td width="25%" bgcolor="#e6e6ff">Low</td><td width="25%" bgcolor="#e6e6ff">High</td><td width="25%" bgcolor="#e6e6ff">Turn clockwise</td></tr><tr valign="top"><td width="25%">High</td><td width="25%">High</td><td width="25%">Low</td><td width="25%">Turn anti-clockwise</td></tr><tr valign="top"><td width="25%" bgcolor="#e6e6ff">High</td><td width="25%" bgcolor="#e6e6ff">Low</td><td width="25%" bgcolor="#e6e6ff">Low</td><td width="25%" bgcolor="#e6e6ff">Stop</td></tr><tr valign="top"><td width="25%">High</td><td width="25%">High</td><td width="25%">High</td><td width="25%">Stop</td></tr><tr valign="top"><td width="25%" bgcolor="#e6e6ff">Low</td><td width="25%" bgcolor="#e6e6ff">Not applicable</td><td width="25%" bgcolor="#e6e6ff">Not applicable</td><td width="25%" bgcolor="#e6e6ff">Stop</td></tr></tbody></table>
+
+
+<p/></div>
+</div><div class="slide" data-transition="none"><div class="content code" ref="steps/02_slide/3">
+<h1>One-way motor control</h1>
+
+<p>// Pin 2 on the L293D, can also accept values from a PWM pin.
+int motor1Pin1 = 3;
+int motor1Pin2 = 4; // pin 7 on L293D
+int motorEnablePin = 9; // pin 1 on L293D
+int potPin = 0;
+int pot_val;</p>
+
+<p>void setup() {
+  Serial.begin(9600); // setup serial</p>
+
+<p>  pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(motorEnablePin, OUTPUT);</p>
+
+<p>  digitalWrite(motorEnablePin, HIGH);
+}</p>
+
+<p>void loop() {
+   pot_val = analogRead(potPin);</p>
+
+<p>   Serial.println(pot<em>val);
+   pot</em>val = map(pot<em>val, 0, 1023, 0, 254);
+   Serial.println(pot</em>val);</p>
+
+<p>   analogWrite(motor1Pin1, pot_val);
+   digitalWrite(motor1Pin2, LOW);</p>
+
+<p>   delay(15);
+}</p></div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="steps/02_slide/4">
+<h1>Adding wheels is easy with a kit!</h1>
+
+<h2>No, I didn't finish this :(</h2>
+
+<p><img src="./file/steps/wheels-box.jpg" width="640" height="480" alt="Wheels"/></p>
+
+<!--
+- Introduing a motor control H-Bridge IC, the L293D.
+- Possibly, adding another button that will control forward and reverse?
+- Putting this all together onto a track & wheel set.
+- <final code using potentiometer and maybe reverse/forward!>
+- Video of it running?!
+- Resources used
+- Rough breakdown of costs.
+-->
+</div>
+</div><div class="slide" data-transition="none"><div class="content center" ref="final/01_slide/1">
+<h1>Video break!</h1></div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="final/01_slide/2">
+<h1>Next steps?</h1>
+
+<ul>
+<li>Add a distance sensor (e.g. SRF05)</li>
+<li>Code in obstacle avoidance</li>
+<li>Make it go reverse / forward with a button (easy!)</li>
+<li>Turn it into a cat toy?</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content full-page" ref="final/01_slide/3">
+<h1>Dapper says Hello</h1>
+
+<p><img src="./file/final/dapper.jpg" width="478" height="640" alt="Dapper"/></p></div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="final/01_slide/4">
+<h1>So, what did I learn about Arduino?</h1>
+
+<ul>
+<li>It's surprisingly simple to use and add functionality to a project.</li>
+<li>Patience and research really helps in not blowing things up.</li>
+<li>Do, make, break, and repeat.</li>
+</ul>
+</div>
+</div><div class="slide" data-transition="none"><div class="content bullets" ref="final/01_slide/5">
+<h1>Resources Used</h1>
+
+<ul>
+<li>Getting started with Arduino by Make. (http://goo.gl/mGn4a)</li>
+<li>http://luckylarry.co.uk/</li>
+<li>#arduino on irc.freenode.net</li>
+<li>Creatron on College &amp; Spadina (http://creatroninc.com/)</li>
+</ul>
+</div>
+</div>
+</div>
+
+</body>
+</html>
